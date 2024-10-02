@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240771324668",
+    "project_id": "dompetkos-57b72",
+    "storage_bucket": "dompetkos-57b72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240771324668:android:088b5caff5f1692376d579",
+        "android_client_info": {
+          "package_name": "com.example.dompetkos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5hTs2jNy4CiGGex9X4UcBNAKUV6Db4RA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
