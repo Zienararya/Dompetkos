@@ -1,5 +1,6 @@
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'spendform.dart';
 
 class Homepage extends StatefulWidget {
@@ -14,7 +15,11 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formatedDate = "${now.day}/${now.month}/${now.year}";
+
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: Icon(
           Icons.calendar_month_outlined,
@@ -22,7 +27,7 @@ class _HomepageState extends State<Homepage> {
         ),
         backgroundColor: Colors.blue[900],
         title: Text(
-          'DD/MM/YYYY',
+          '$formatedDate',
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
@@ -31,13 +36,17 @@ class _HomepageState extends State<Homepage> {
               child: Row(
                 children: <Widget>[
                   Icon(
+                    Icons.bar_chart,
+                    color: Colors.white,
+                  ),
+                  Icon(
                     Icons.edit_document,
                     color: Colors.white,
                   ),
                   Icon(
                     Icons.notifications,
                     color: Colors.white,
-                  )
+                  ),
                 ],
               )),
         ],
@@ -126,7 +135,7 @@ class _HomepageState extends State<Homepage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => IncomeForm()),
+                    MaterialPageRoute(builder: (context) => Incomeform()),
                   );
                 },
                 label: const Text(

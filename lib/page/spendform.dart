@@ -13,12 +13,18 @@ class _SpendFormState extends State<SpendForm> {
       context: context,
       builder: (context) {
         return Container(
-          color: Colors.blue[50],
+          color: Colors.blue[900],
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.school),
-                title: Text("Pendidikan"),
+                leading: Icon(
+                  Icons.school,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Pendidikan",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Pendidikan";
@@ -27,8 +33,14 @@ class _SpendFormState extends State<SpendForm> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.home),
-                title: Text("Tempat Tinggal"),
+                leading: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Tempat Tinggal",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Tempat Tinggal";
@@ -37,8 +49,14 @@ class _SpendFormState extends State<SpendForm> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.fastfood),
-                title: Text("Makanan"),
+                leading: Icon(
+                  Icons.fastfood,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Makanan",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Makanan";
@@ -47,8 +65,14 @@ class _SpendFormState extends State<SpendForm> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.directions_bus),
-                title: Text("Transportasi"),
+                leading: Icon(
+                  Icons.directions_bus,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Transportasi",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Transportasi";
@@ -57,8 +81,14 @@ class _SpendFormState extends State<SpendForm> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.shopping_cart),
-                title: Text("Belanja"),
+                leading: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Belanja",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Belanja";
@@ -67,8 +97,14 @@ class _SpendFormState extends State<SpendForm> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.more_horiz),
-                title: Text("Lainnya"),
+                leading: Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Lainnya",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Lainnya";
@@ -87,20 +123,33 @@ class _SpendFormState extends State<SpendForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pengeluaran"),
-        backgroundColor: Colors.blue,
+        title: const Text(
+          "Pengeluaran",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue[900],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.white),
                 labelText: "DD/MM/YYYY",
-                prefixIcon: Icon(Icons.calendar_today),
+                prefixIcon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.white,
+                ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[100],
+                fillColor: Colors.blue[900],
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
             const SizedBox(height: 16),
@@ -109,7 +158,7 @@ class _SpendFormState extends State<SpendForm> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 decoration: BoxDecoration(
-                  color: Colors.blue[100],
+                  color: Colors.blue[900],
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.grey),
                 ),
@@ -118,31 +167,54 @@ class _SpendFormState extends State<SpendForm> {
                   children: [
                     Text(
                       selectedKategori ?? "Kategori",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
-                    Icon(Icons.arrow_drop_down),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.white,
+                    ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.white),
                 labelText: "Jumlah uang",
-                prefixIcon: Icon(Icons.money),
+                prefixIcon: Icon(
+                  Icons.money,
+                  color: Colors.white,
+                ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[100],
+                fillColor: Colors.blue[900],
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
             const SizedBox(height: 16),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.white),
                 labelText: "Catatan",
-                prefixIcon: Icon(Icons.note),
+                prefixIcon: Icon(
+                  Icons.note,
+                  color: Colors.white,
+                ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[100],
+                fillColor: Colors.blue[900],
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
             const SizedBox(height: 20),
@@ -153,9 +225,12 @@ class _SpendFormState extends State<SpendForm> {
                   onPressed: () {
                     // Tambahkan aksi untuk mengingatkan
                   },
-                  child: const Text("Ingatkan"),
+                  child: const Text(
+                    "Ingatkan",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.blue[900],
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),
@@ -164,9 +239,12 @@ class _SpendFormState extends State<SpendForm> {
                   onPressed: () {
                     // Tambahkan aksi untuk simpan data
                   },
-                  child: const Text("Simpan"),
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.blue[900],
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),
