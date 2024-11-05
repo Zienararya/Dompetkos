@@ -1,13 +1,16 @@
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'spendform.dart';
+import 'dart:async';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'kalender.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomepageState createState() => _HomepageState();
 }
 
@@ -29,7 +32,7 @@ class _HomepageState extends State<Homepage> {
         ),
         backgroundColor: Colors.blue[900],
         title: Text(
-          '$formatedDate',
+          formatedDate,
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[

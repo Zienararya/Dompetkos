@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class SpendForm extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SpendFormState createState() => _SpendFormState();
 }
 
@@ -225,28 +226,28 @@ class _SpendFormState extends State<SpendForm> {
                   onPressed: () {
                     // Tambahkan aksi untuk mengingatkan
                   },
-                  child: const Text(
-                    "Ingatkan",
-                    style: TextStyle(color: Colors.white),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
+                  ),
+                  child: const Text(
+                    "Ingatkan",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     // Tambahkan aksi untuk simpan data
                   },
-                  child: const Text(
-                    "Simpan",
-                    style: TextStyle(color: Colors.white),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
+                  ),
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

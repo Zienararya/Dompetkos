@@ -238,14 +238,14 @@ class _IncomeformState extends State<Incomeform> {
                     onPressed: () {
                       // Tambahkan aksi untuk simpan data
                     },
-                    child: const Text(
-                      "Simpan",
-                      style: TextStyle(color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
                       padding: const EdgeInsets.symmetric(
                           horizontal: 24, vertical: 12),
+                    ),
+                    child: const Text(
+                      "Simpan",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ],
