@@ -1,3 +1,4 @@
+import 'package:dompetkos/page/home.dart';
 import 'package:flutter/material.dart';
 
 class Incomeform extends StatefulWidget {
@@ -126,10 +127,20 @@ class _IncomeformState extends State<Incomeform> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        leading: Icon(
-          Icons.savings_outlined,
-          color: Colors.white,
-        ),
+        leading: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Homepage()), // Navigasi ke halaman kalender
+                    );
+                  },
+                  child: Icon(
+                    Icons.feed_outlined,
+                    color: Colors.white,
+                  ),
+                ),
         title: const Text(
           "Pemasukan",
           style: TextStyle(
