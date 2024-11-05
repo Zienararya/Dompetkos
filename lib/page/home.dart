@@ -4,6 +4,7 @@ import 'spendform.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'kalender.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,6 +16,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   bool isExpanded = false;
+  bool hasNotification = true; // Penanda apakah ada notifikasi
 
   @override
   Widget build(BuildContext context) {
@@ -35,56 +37,118 @@ class _HomepageState extends State<Homepage> {
         ),
         actions: <Widget>[
           Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.bar_chart,
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.bar_chart,
+                  color: Colors.white,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              KalenderPage()), // Navigasi ke halaman kalender
+                    );
+                  },
+                  child: Icon(
+                    Icons.calendar_month_outlined,
                     color: Colors.white,
                   ),
-                  Icon(
-                    Icons.edit_document,
-                    color: Colors.white,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Tampilkan pop-up pemberitahuan
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Notifikasi"),
+                          content: Text("Anda memiliki notifikasi baru."),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Menutup pop-up
+                              },
+                              child: Text("Tutup"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                      ),
+                      if (hasNotification) // Jika ada notifikasi, tampilkan lingkaran merah
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 12,
+                              minHeight: 12,
+                            ),
+                            child: Text(
+                              '1', // Ganti dengan jumlah notifikasi jika perlu
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                  ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(95.0),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Rp. 100.000',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 39,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      Text(
-                        'Pemasukan : ',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Montserrat'),
-                      ),
-                      Text(
-                        'Pengeluaran : ',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Montserrat'),
-                      ),
-                    ],
-                  ),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, bottom: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Rp. 100.000',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 39,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      'Pemasukan : ',
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'Montserrat'),
+                    ),
+                    Text(
+                      'Pengeluaran : ',
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'Montserrat'),
+                    ),
+                  ],
                 ),
-              ]),
+              ),
+            ],
+          ),
         ),
       ),
       body: Padding(
