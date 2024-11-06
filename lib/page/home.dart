@@ -1,9 +1,6 @@
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:flutter/material.dart';
 import 'spendform.dart';
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'kalender.dart';
 
 class Homepage extends StatefulWidget {
@@ -54,7 +51,7 @@ class _HomepageState extends State<Homepage> {
                     );
                   },
                   child: Icon(
-                    Icons.calendar_month_outlined,
+                    Icons.feed_outlined,
                     color: Colors.white,
                   ),
                 ),
