@@ -1,3 +1,4 @@
+import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:flutter/material.dart';
 import 'spendform.dart';
@@ -14,6 +15,27 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   bool isExpanded = false;
   bool hasNotification = true; // Penanda apakah ada notifikasi
+  List<Map<String, dynamic>> transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTransactions();
+  }
+
+  void loadTransactions() async {
+    final data = await DatabaseInstance().fetchTransactions();
+    setState(() {
+      transactions = data;
+    });
+  }
+
+  Future<void> refreshTransactions() async {
+    final data = await DatabaseInstance().fetchTransactions();
+    setState(() {
+      transactions = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,13 +174,61 @@ class _HomepageState extends State<Homepage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blue[900],
-                borderRadius: BorderRadius.circular(10),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: (context, index) {
+                  final transaction = transactions[index];
+                  return Card(
+                    color: Colors.blue[900],
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    child: ListTile(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.blue[50],
+                              title: Text("Details"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Jumlah: ${transaction['amount']}"),
+                                  Text("Tanggal: ${transaction['date']}"),
+                                  Text("Kategori: ${transaction['category']}"),
+                                  Text("Deskripsi: ${transaction['desc']}"),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Menutup pop-up
+                                  },
+                                  child: Text("Tutup"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      title: Text(
+                        transaction['amount'].toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(
+                        transaction['date'],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -177,6 +247,7 @@ class _HomepageState extends State<Homepage> {
                     context,
                     MaterialPageRoute(builder: (context) => SpendForm()),
                   );
+                  refreshTransactions(); // Refresh the transactions after returning
                 },
                 label: const Text(
                   "Pengeluaran",
@@ -201,6 +272,7 @@ class _HomepageState extends State<Homepage> {
                     context,
                     MaterialPageRoute(builder: (context) => Incomeform()),
                   );
+                  refreshTransactions(); // Refresh the transactions after returning
                 },
                 label: const Text(
                   "Pemasukan",

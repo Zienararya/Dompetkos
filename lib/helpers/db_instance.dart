@@ -1,51 +1,97 @@
 import 'dart:io';
-import 'package:dompetkos/models/kategori.dart';
+import 'package:dompetkos/models/transaksi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseInstance{
+class DatabaseInstance {
+  static final DatabaseInstance _instance = DatabaseInstance._internal();
+  static Database? _database;
   final String _databaseName = 'dompetkos.db';
   final int _databaseVersion = 1;
 
-  // Category table
-  final String table = 'category';
-  final String id = 'id_category';
-  final String name = 'name_category';
-  final String desc = 'desc_category';
-  final String icon = 'icon_category';
-  // Transaction table
-  // Budget table
-  // Reminder table
+  factory DatabaseInstance() {
+    return _instance;
+  }
 
-  Database? _database;
-  Future<Database> database() async{
-    if(_database != null) return _database!;
+  DatabaseInstance._internal();
+
+  Future<Database> database() async {
+    if (_database != null) return _database!;
     _database = await _initDatabase();
     return _database!;
   }
 
-  Future _initDatabase() async{
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
-    return openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
+  Future<Database> _initDatabase() async {
+    return await openDatabase(
+      _databaseName,
+      version: _databaseVersion,
+      onCreate: (db, version) async {
+        await db.execute('''
+    CREATE TABLE "transactions" (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date DATETIME,
+      category TEXT,
+      amount INTEGER ,
+      desc TEXT,
+      type TEXT,
+      budget_id INTEGER,
+      FOREIGN KEY (budget_id) REFERENCES budget (id)
+    )
+  ''');
+        await db.execute('''
+    CREATE TABLE "budget" (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      month INTEGER ,
+      year INTEGER ,
+      total INTEGER ,
+      education_budget INTEGER,
+      home_budget INTEGER,
+      food_budget INTEGER,
+      transport_budget INTEGER,
+      shop_budget INTEGER,
+      other_budget INTEGER,
+      reminder_id INTEGER,
+      FOREIGN KEY (reminder_id) REFERENCES reminder (id)
+    )
+  ''');
+        await db.execute('''
+    CREATE TABLE "reminder" (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date DATETIME ,
+      type TEXT ,
+      stats TEXT
+    )
+  ''');
+      },
+    );
   }
 
-  Future _onCreate(Database db, int version) async{
-    await db.execute(
-      'Create Table $table ($id INTEGER PRIMARY KEY, $name TEXT, $desc TEXT, $icon TEXT) '
-      );
+  Future<List<Map<String, dynamic>>> fetchTransactions() async {
+    final db = await database();
+    return await db.query('transactions');
   }
 
-  Future<List<CategoryModel>> all() async{
-    final data= await _database!.query(table);
-    List<CategoryModel> result =
-    data.map((e) =>CategoryModel.fromJson(e)).toList();
+  Future<List<TransactionModel>> all() async {
+    final data = await _database!.query('transactions');
+    List<TransactionModel> result =
+        data.map((e) => TransactionModel.fromJson(e)).toList();
     return result;
   }
 
-  Future<int> insert(Map<String, dynamic> row) async{
-    final query = await _database!.insert(table, row);
+  Future<int> insertTransaction(Map<String, dynamic> row) async {
+    final query = await _database!.insert('transactions', row);
     return query;
+  }
+
+  Future<int> deleteTransaction(int id) async {
+    final db = await database();
+    return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    await databaseFactory.deleteDatabase(path);
   }
 }

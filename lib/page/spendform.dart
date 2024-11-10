@@ -1,3 +1,4 @@
+import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:flutter/material.dart';
 
 class SpendForm extends StatefulWidget {
@@ -8,6 +9,18 @@ class SpendForm extends StatefulWidget {
 
 class _SpendFormState extends State<SpendForm> {
   String? selectedKategori;
+  DatabaseInstance databaseInstance = DatabaseInstance();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController budget = TextEditingController();
+
+  @override
+  void initState() {
+    databaseInstance.database();
+    super.initState();
+  }
 
   void _pilihKategori() {
     showModalBottomSheet(
@@ -29,6 +42,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Pendidikan";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -45,6 +59,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Tempat Tinggal";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -61,6 +76,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -77,6 +93,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -93,6 +110,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Belanja";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -109,6 +127,7 @@ class _SpendFormState extends State<SpendForm> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Lainnya";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -135,6 +154,8 @@ class _SpendFormState extends State<SpendForm> {
         child: Column(
           children: [
             TextField(
+              keyboardType: TextInputType.datetime,
+              controller: dateController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -152,6 +173,20 @@ class _SpendFormState extends State<SpendForm> {
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
+              onTap: () async {
+                DateTime now = DateTime.now();
+                final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: DateTime(2015, 8),
+                    lastDate: DateTime(2101));
+                if (picked != null && picked != now) {
+                  setState(() {
+                    now = picked;
+                    dateController.text = "${now.day}/${now.month}/${now.year}";
+                  });
+                }
+              },
             ),
             const SizedBox(height: 16),
             GestureDetector(
@@ -180,6 +215,7 @@ class _SpendFormState extends State<SpendForm> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: amountController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -200,6 +236,7 @@ class _SpendFormState extends State<SpendForm> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: descController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -237,8 +274,17 @@ class _SpendFormState extends State<SpendForm> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan aksi untuk simpan data
+                  onPressed: () async {
+                    await databaseInstance.insertTransaction({
+                      'date': dateController.text,
+                      'category': categoryController.text,
+                      'amount': int.parse(amountController.text),
+                      'desc': descController.text,
+                      'type': 'pengeluaran',
+                      // 'budget_id': int.parse(budget.text)
+                    });
+                    Navigator.pop(context);
+                    setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
