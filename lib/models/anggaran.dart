@@ -1,38 +1,35 @@
-// class Anggaran {
-//   int _id;
-//   String _name;
-//   String _phone;
+// anggaran_model.dart
 
-//   // konstruktor versi 1
-//   Contact(this._name, this._phone);
+class AnggaranModel {
+  int? id;
+  String kategori;
+  int jumlah;
+  String periode;
 
-//   // konstruktor versi 2: konversi dari Map ke Contact
-//   Contact.fromMap(Map<String, dynamic> map) {
-//     this._id = map['id'];
-//     this._name = map['name'];
-//     this._phone = map['phone'];
-//   }
-//   //getter dan setter (mengambil dan mengisi data kedalam object)
-//   // getter
-//   int get id => _id;
-//   String get name => _name;
-//   String get phone => _phone;
+  AnggaranModel({
+    this.id,
+    required this.kategori,
+    required this.jumlah,
+    required this.periode,
+  });
 
-//   // setter
-//   set name(String value) {
-//     _name = value;
-//   }
+  // Mengonversi dari Map ke AnggaranModel
+  factory AnggaranModel.fromMap(Map<String, dynamic> map) {
+    return AnggaranModel(
+      id: map['id'],
+      kategori: map['kategori'],
+      jumlah: map['jumlah'],
+      periode: map['periode'],
+    );
+  }
 
-//   set phone(String value) {
-//     _phone = value;
-//   }
-
-//   // konversi dari Contact ke Map
-//   Map<String, dynamic> toMap() {
-//     Map<String, dynamic> map = Map<String, dynamic>();
-//     map['id'] = this._id;
-//     map['name'] = name;
-//     map['phone'] = phone;
-//     return map;
-//   }
-// }
+  // Mengonversi dari AnggaranModel ke Map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'kategori': kategori,
+      'jumlah': jumlah,
+      'periode': periode,
+    };
+  }
+}

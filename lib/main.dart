@@ -1,5 +1,5 @@
 import 'package:dompetkos/helpers/db_instance.dart';
-import 'package:dompetkos/models/kategori.dart';
+import 'package:dompetkos/models/transaksi.dart';
 import 'package:flutter/material.dart';
 import 'page/home.dart';
 
@@ -17,25 +17,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    databaseInstance.database();
     super.initState();
+    // databaseInstance.deleteDatabase().then((_) {
+    //   databaseInstance.database();
+    // });
+    databaseInstance.database();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: FutureBuilder<List<CategoryModel>>(
+        home: FutureBuilder<List<TransactionModel>>(
             future: databaseInstance.all(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return MaterialApp(title: 'DompetKos', home: Homepage());
               } else {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.blue,
-                  ),
-                );
+                return MaterialApp(title: 'DompetKos', home: Homepage());
+                // return Center(
+                //   child: CircularProgressIndicator(
+                //     color: Colors.blue,
+                //   ),
+                // );
               }
             }));
   }
