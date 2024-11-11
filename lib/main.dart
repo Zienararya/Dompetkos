@@ -18,10 +18,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // databaseInstance.deleteDatabase().then((_) {
-    //   databaseInstance.database();
-    // });
-    databaseInstance.database();
+    databaseInstance.deleteDatabase().then((_) {
+      databaseInstance.database();
+    });
+    // databaseInstance.database();
   }
 
   @override

@@ -35,32 +35,7 @@ class DatabaseInstance {
       amount INTEGER ,
       desc TEXT,
       type TEXT,
-      budget_id INTEGER,
-      FOREIGN KEY (budget_id) REFERENCES budget (id)
-    )
-  ''');
-        await db.execute('''
-    CREATE TABLE "budget" (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      month INTEGER ,
-      year INTEGER ,
-      total INTEGER ,
-      education_budget INTEGER,
-      home_budget INTEGER,
-      food_budget INTEGER,
-      transport_budget INTEGER,
-      shop_budget INTEGER,
-      other_budget INTEGER,
-      reminder_id INTEGER,
-      FOREIGN KEY (reminder_id) REFERENCES reminder (id)
-    )
-  ''');
-        await db.execute('''
-    CREATE TABLE "reminder" (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      date DATETIME ,
-      type TEXT ,
-      stats TEXT
+      isreminder BOOL,
     )
   ''');
       },

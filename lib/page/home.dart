@@ -1,6 +1,7 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'spendform.dart';
 import 'kalender.dart';
 
@@ -35,6 +36,68 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       transactions = data;
     });
+  }
+
+  Future<void> deleteTransaction(int id) async {
+    bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue[50],
+          title: Text("Konfirmasi"),
+          content: Text("Apakah Anda yakin ingin menghapus transaksi ini?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false
+              },
+              child: Text("Batal"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true
+              },
+              child: Text("Hapus"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      await DatabaseInstance().deleteTransaction(id);
+      refreshTransactions();
+    }
+  }
+
+  String formatAmount(int amount) {
+    final formatter = NumberFormat('#,##0', 'en_US');
+    return formatter.format(amount);
+  }
+
+  IconData _getIconData(String category) {
+    switch (category) {
+      case "Pendidikan":
+        return Icons.school;
+
+      case "Tempat Tinggal":
+        return Icons.home;
+
+      case "Makanan":
+        return Icons.fastfood;
+
+      case "Transportasi":
+        return Icons.directions_bus;
+
+      case "Belanja":
+        return Icons.shopping_cart;
+
+      case "Lainnya":
+        return Icons.more_horiz;
+
+      default:
+        return Icons.help_outline; // Default icon
+    }
   }
 
   @override
@@ -195,7 +258,8 @@ class _HomepageState extends State<Homepage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Jumlah: ${transaction['amount']}"),
+                                  Text(
+                                      "Jumlah: ${formatAmount(transaction['amount'])}"),
                                   Text("Tanggal: ${transaction['date']}"),
                                   Text("Kategori: ${transaction['category']}"),
                                   Text("Deskripsi: ${transaction['desc']}"),
@@ -214,17 +278,26 @@ class _HomepageState extends State<Homepage> {
                           },
                         );
                       },
+                      leading: Icon(
+                        _getIconData(transaction['category']),
+                        color: Colors.white,
+                      ),
                       title: Text(
-                        transaction['amount'].toString(),
+                        formatAmount(transaction['amount']),
                         style: TextStyle(color: Colors.white),
                       ),
                       subtitle: Text(
                         transaction['date'],
                         style: TextStyle(color: Colors.white),
                       ),
-                      trailing: Icon(
-                        Icons.delete_forever_outlined,
-                        color: Colors.white,
+                      trailing: GestureDetector(
+                        onTap: () async {
+                          await deleteTransaction(transaction['id']);
+                        },
+                        child: Icon(
+                          Icons.delete_forever_outlined,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   );
@@ -242,12 +315,14 @@ class _HomepageState extends State<Homepage> {
             child: Visibility(
               visible: isExpanded,
               child: FloatingActionButton.extended(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SpendForm()),
                   );
-                  refreshTransactions(); // Refresh the transactions after returning
+                  if (result == true) {
+                    refreshTransactions(); // Refresh the transactions after returning
+                  }
                 },
                 label: const Text(
                   "Pengeluaran",
@@ -267,12 +342,14 @@ class _HomepageState extends State<Homepage> {
             child: Visibility(
               visible: isExpanded,
               child: FloatingActionButton.extended(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Incomeform()),
                   );
-                  refreshTransactions(); // Refresh the transactions after returning
+                  if (result == true) {
+                    refreshTransactions(); // Refresh the transactions after returning
+                  }
                 },
                 label: const Text(
                   "Pemasukan",
