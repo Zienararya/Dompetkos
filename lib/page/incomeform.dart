@@ -1,15 +1,26 @@
 import 'package:dompetkos/page/home.dart';
+import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:flutter/material.dart';
 
 class Incomeform extends StatefulWidget {
-  const Incomeform({super.key});
-
   @override
   State<Incomeform> createState() => _IncomeformState();
 }
 
 class _IncomeformState extends State<Incomeform> {
   String? selectedKategori;
+  DatabaseInstance databaseInstance = DatabaseInstance();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController budget = TextEditingController();
+
+  @override
+  void initState() {
+    databaseInstance.database();
+    super.initState();
+  }
 
   void _pilihKategori() {
     showModalBottomSheet(
@@ -31,6 +42,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Pendidikan";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -47,6 +59,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Tempat Tinggal";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -63,6 +76,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -79,6 +93,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -95,6 +110,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Belanja";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -111,6 +127,7 @@ class _IncomeformState extends State<Incomeform> {
                 onTap: () {
                   setState(() {
                     selectedKategori = "Lainnya";
+                    categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
@@ -128,19 +145,19 @@ class _IncomeformState extends State<Incomeform> {
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              Homepage()), // Navigasi ke halaman kalender
-                    );
-                  },
-                  child: Icon(
-                    Icons.feed_outlined,
-                    color: Colors.white,
-                  ),
-                ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Homepage()), // Navigasi ke halaman kalender
+            );
+          },
+          child: Icon(
+            Icons.feed_outlined,
+            color: Colors.white,
+          ),
+        ),
         title: const Text(
           "Pemasukan",
           style: TextStyle(
@@ -155,6 +172,8 @@ class _IncomeformState extends State<Incomeform> {
         child: Column(
           children: [
             TextField(
+              keyboardType: TextInputType.datetime,
+              controller: dateController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -172,6 +191,20 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
+              onTap: () async {
+                DateTime now = DateTime.now();
+                final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: DateTime(2015, 8),
+                    lastDate: DateTime(2101));
+                if (picked != null && picked != now) {
+                  setState(() {
+                    now = picked;
+                    dateController.text = "${now.day}/${now.month}/${now.year}";
+                  });
+                }
+              },
             ),
             const SizedBox(height: 16),
             GestureDetector(
@@ -200,6 +233,8 @@ class _IncomeformState extends State<Incomeform> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -220,6 +255,7 @@ class _IncomeformState extends State<Incomeform> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: descController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -238,29 +274,48 @@ class _IncomeformState extends State<Incomeform> {
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    iconAlignment: IconAlignment.end,
-                    onPressed: () {
-                      // Tambahkan aksi untuk simpan data
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[900],
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                    ),
-                    child: const Text(
-                      "Simpan",
-                      style: TextStyle(color: Colors.white),
-                    ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Tambahkan aksi untuk mengingatkan
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[900],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                ],
-              ),
+                  child: const Text(
+                    "Ingatkan",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await databaseInstance.insertTransaction({
+                      'date': dateController.text,
+                      'category': categoryController.text,
+                      'amount': int.parse(amountController.text),
+                      'desc': descController.text,
+                      'type': 'pengeluaran',
+                      // 'budget_id': int.parse(budget.text)
+                    });
+                    Navigator.pop(context, true);
+                    setState(() {});
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[900],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                  ),
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

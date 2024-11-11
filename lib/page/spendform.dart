@@ -1,4 +1,5 @@
 import 'package:dompetkos/helpers/db_instance.dart';
+import 'package:dompetkos/page/home.dart';
 import 'package:flutter/material.dart';
 
 class SpendForm extends StatefulWidget {
@@ -143,6 +144,20 @@ class _SpendFormState extends State<SpendForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Homepage()), // Navigasi ke halaman kalender
+            );
+          },
+          child: Icon(
+            Icons.feed_outlined,
+            color: Colors.white,
+          ),
+        ),
         title: const Text(
           "Pengeluaran",
           style: TextStyle(color: Colors.white),
@@ -216,6 +231,7 @@ class _SpendFormState extends State<SpendForm> {
             const SizedBox(height: 16),
             TextField(
               controller: amountController,
+              keyboardType: TextInputType.number,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -275,15 +291,16 @@ class _SpendFormState extends State<SpendForm> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
+                    int amount = int.parse(amountController.text);
                     await databaseInstance.insertTransaction({
                       'date': dateController.text,
                       'category': categoryController.text,
-                      'amount': int.parse(amountController.text),
+                      'amount': -amount,
                       'desc': descController.text,
                       'type': 'pengeluaran',
                       // 'budget_id': int.parse(budget.text)
                     });
-                    Navigator.pop(context);
+                    Navigator.pop(context, true);
                     setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
