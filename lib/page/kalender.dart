@@ -1,4 +1,7 @@
+import 'package:dompetkos/page/detailbulan.dart';
 import 'package:flutter/material.dart';
+
+
 
 void main() {
   runApp(KalenderPage());
@@ -14,19 +17,19 @@ class KalenderPage extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView( // Tambahkan SingleChildScrollView di sini
+          child: SingleChildScrollView(
             child: Column(
               children: [
-                buildMonthContainer('November'),
-                buildMonthContainer('September'),
-                buildMonthContainer('Agustus'),
-                buildMonthContainer('Juli'),
-                buildMonthContainer('Juni'),
-                buildMonthContainer('Mei'),
-                buildMonthContainer('April'),
-                buildMonthContainer('Maret'),
-                buildMonthContainer('Febuari'),
-                buildMonthContainer('Januari')
+                buildMonthContainer(context, 'November'),
+                buildMonthContainer(context, 'September'),
+                buildMonthContainer(context, 'Agustus'),
+                buildMonthContainer(context, 'Juli'),
+                buildMonthContainer(context, 'Juni'),
+                buildMonthContainer(context, 'Mei'),
+                buildMonthContainer(context, 'April'),
+                buildMonthContainer(context, 'Maret'),
+                buildMonthContainer(context, 'Febuari'),
+                buildMonthContainer(context, 'Januari')
               ],
             ),
           ),
@@ -35,18 +38,27 @@ class KalenderPage extends StatelessWidget {
     );
   }
 
-  Widget buildMonthContainer(String month) {
-    return Container(
-      height: 80,
-      margin: EdgeInsets.only(bottom: 8.0),
-      color: Colors.blue[800],
-      child: Center(
-        child: Text(
-          month,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+  Widget buildMonthContainer(BuildContext context, String month) {
+    return GestureDetector(
+      onTap: () {
+        // Navigasi ke halaman ExpenseDetailPage saat bulan ditekan
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ExpenseDetailPage(month: month)),
+        );
+      },
+      child: Container(
+        height: 80,
+        margin: EdgeInsets.only(bottom: 8.0),
+        color: Colors.blue[800],
+        child: Center(
+          child: Text(
+            month,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
