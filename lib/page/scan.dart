@@ -14,6 +14,12 @@ class ScanPage extends StatelessWidget {
             'SCAN',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Kembali ke halaman sebelumnya
+            },
+          ),
           backgroundColor: Colors.blue[900],
           centerTitle: true,
         ),
