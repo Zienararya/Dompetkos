@@ -17,6 +17,9 @@ class _HomepageState extends State<Homepage> {
   bool isExpanded = false;
   bool hasNotification = true; // Penanda apakah ada notifikasi
   List<Map<String, dynamic>> transactions = [];
+  int totalAmount = 0;
+  int totalIncome = 0;
+  int totalExpense = 0;
 
   @override
   void initState() {
@@ -28,13 +31,26 @@ class _HomepageState extends State<Homepage> {
     final data = await DatabaseInstance().fetchTransactions();
     setState(() {
       transactions = data;
+      calculateTotals();
     });
+  }
+
+  void calculateTotals() {
+    totalIncome = transactions
+        .where((item) => item['amount'] > 0)
+        .fold(0, (sum, item) => sum + (item['amount'] as int));
+    totalExpense = transactions
+        .where((item) => item['amount'] < 0)
+        .fold(0, (sum, item) => sum + (item['amount']) as int);
+    totalAmount = totalIncome + totalExpense;
+    print("this function is run");
   }
 
   Future<void> refreshTransactions() async {
     final data = await DatabaseInstance().fetchTransactions();
     setState(() {
       transactions = data;
+      calculateTotals();
     });
   }
 
@@ -209,7 +225,7 @@ class _HomepageState extends State<Homepage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Rp. 100.000',
+                      'Rp. ${formatAmount(totalAmount)}',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 39,
@@ -217,12 +233,12 @@ class _HomepageState extends State<Homepage> {
                           color: Colors.white),
                     ),
                     Text(
-                      'Pemasukan : ',
+                      'Pemasukan : Rp. ${formatAmount(totalIncome)}',
                       style: TextStyle(
                           color: Colors.white, fontFamily: 'Montserrat'),
                     ),
                     Text(
-                      'Pengeluaran : ',
+                      'Pengeluaran : Rp. ${formatAmount(totalExpense.abs())}',
                       style: TextStyle(
                           color: Colors.white, fontFamily: 'Montserrat'),
                     ),
