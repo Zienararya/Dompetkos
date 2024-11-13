@@ -36,12 +36,12 @@ class _IncomeformState extends State<Incomeform> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Pendidikan",
+                  "Uang Saku",
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Pendidikan";
+                    selectedKategori = "Uang Saku";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
@@ -53,63 +53,12 @@ class _IncomeformState extends State<Incomeform> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Tempat Tinggal",
+                  "Freelance",
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Tempat Tinggal";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.fastfood,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Makanan",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Makanan";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.directions_bus,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Transportasi",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Transportasi";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Belanja",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Belanja";
+                    selectedKategori = "Freelance";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
