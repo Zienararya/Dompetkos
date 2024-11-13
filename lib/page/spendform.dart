@@ -42,13 +42,68 @@ class _SpendFormState extends State<SpendForm> {
                   Navigator.pop(context);
                 },
               ),
-              // Tambahkan ListTile lain untuk kategori lain...
+              ListTile(
+                leading: Icon(Icons.home, color: Colors.white),
+                title: Text("Tempat Tinggal", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Tempat Tinggal";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.restaurant, color: Colors.white),
+                title: Text("Makanan", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.directions_bus, color: Colors.white),
+                title: Text("Transportasi", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.shopping_cart, color: Colors.white),
+                title: Text("Belanja", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Belanja";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.more_horiz, color: Colors.white),
+                title: Text("Lainnya", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Lainnya";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

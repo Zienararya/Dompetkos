@@ -27,102 +27,42 @@ class _IncomeformState extends State<Incomeform> {
       context: context,
       builder: (context) {
         return Container(
-          color: Colors.blue[900],
+          color: Colors.white,
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(
-                  Icons.school,
-                  color: Colors.white,
-                ),
+                leading: Icon(Icons.account_balance_wallet, color: Colors.black),
                 title: Text(
-                  "Pendidikan",
-                  style: TextStyle(color: Colors.white),
+                  "Uang Saku",
+                  style: TextStyle(color: Colors.black),
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Pendidikan";
+                    selectedKategori = "Uang Saku";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
+                leading: Icon(Icons.work, color: Colors.black),
                 title: Text(
-                  "Tempat Tinggal",
-                  style: TextStyle(color: Colors.white),
+                  "Freelance",
+                  style: TextStyle(color: Colors.black),
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Tempat Tinggal";
+                    selectedKategori = "Freelance";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: Icon(
-                  Icons.fastfood,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Makanan",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Makanan";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.directions_bus,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Transportasi",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Transportasi";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Belanja",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Belanja";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.more_horiz,
-                  color: Colors.white,
-                ),
+                leading: Icon(Icons.more_horiz, color: Colors.black),
                 title: Text(
                   "Lainnya",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 ),
                 onTap: () {
                   setState(() {
@@ -138,6 +78,7 @@ class _IncomeformState extends State<Incomeform> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
