@@ -35,7 +35,7 @@ class DatabaseInstance {
       amount INTEGER ,
       desc TEXT,
       type TEXT,
-      isreminder BOOL,
+      isreminder BOOL
     )
   ''');
       },
