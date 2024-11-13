@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: ExpenseDetailPage(),
-  ));
-}
-
 class ExpenseDetailPage extends StatelessWidget {
+  final String month;
+
+  // Tambahkan konstruktor untuk menerima parameter bulan
+  ExpenseDetailPage({required this.month});
+
   final Map<String, double> dataMap = {
     "Pendidikan": 30,
     "Tempat Tinggal": 20,
@@ -27,9 +26,9 @@ class ExpenseDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey, // Mengubah background menjadi abu-abu muda
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: Text('September'),
+        title: Text(month), // Menampilkan bulan yang dipilih di AppBar
         backgroundColor: Colors.blue[800],
         actions: [
           IconButton(
@@ -49,7 +48,6 @@ class ExpenseDetailPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            // Diagram lingkaran dengan label di samping
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -61,17 +59,17 @@ class ExpenseDetailPage extends StatelessWidget {
                     chartType: ChartType.disc,
                     chartRadius: MediaQuery.of(context).size.width / 3,
                     legendOptions: LegendOptions(
-                      showLegends: false, // Sembunyikan legenda default
+                      showLegends: false,
                     ),
                     chartValuesOptions: ChartValuesOptions(
-                      showChartValues: false, // Sembunyikan persentase di dalam chart
+                      showChartValues: false,
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 1,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0), // Menambahkan padding kanan untuk mencegah overflow
+                    padding: const EdgeInsets.only(right: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -118,12 +116,12 @@ class ExpenseDetailPage extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10), // Ukuran font lebih kecil
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
             ),
           ),
           Text(
             percentage,
-            style: TextStyle(fontSize: 10), // Ukuran font persentase lebih kecil
+            style: TextStyle(fontSize: 10),
           ),
         ],
       ),
