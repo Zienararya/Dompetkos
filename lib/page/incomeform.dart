@@ -14,7 +14,6 @@ class _IncomeformState extends State<Incomeform> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  TextEditingController budget = TextEditingController();
 
   @override
   void initState() {
@@ -27,14 +26,15 @@ class _IncomeformState extends State<Incomeform> {
       context: context,
       builder: (context) {
         return Container(
-          color: Colors.white,
+          color: Colors.blue[900],
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.account_balance_wallet, color: Colors.black),
+                leading:
+                    Icon(Icons.account_balance_wallet, color: Colors.white),
                 title: Text(
                   "Uang Saku",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
@@ -45,10 +45,10 @@ class _IncomeformState extends State<Incomeform> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.work, color: Colors.black),
+                leading: Icon(Icons.work, color: Colors.white),
                 title: Text(
                   "Freelance",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
@@ -59,10 +59,10 @@ class _IncomeformState extends State<Incomeform> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.more_horiz, color: Colors.black),
+                leading: Icon(Icons.more_horiz, color: Colors.white),
                 title: Text(
                   "Lainnya",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
@@ -78,7 +78,6 @@ class _IncomeformState extends State<Incomeform> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -217,22 +216,8 @@ class _IncomeformState extends State<Incomeform> {
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan aksi untuk mengingatkan
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
-                  ),
-                  child: const Text(
-                    "Ingatkan",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 ElevatedButton(
                   onPressed: () async {
                     await databaseInstance.insertTransaction({
@@ -241,7 +226,6 @@ class _IncomeformState extends State<Incomeform> {
                       'amount': int.parse(amountController.text),
                       'desc': descController.text,
                       'type': 'pengeluaran',
-                      // 'budget_id': int.parse(budget.text)
                     });
                     Navigator.pop(context, true);
                     setState(() {});

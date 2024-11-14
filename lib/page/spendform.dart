@@ -10,6 +10,7 @@ class SpendForm extends StatefulWidget {
 
 class _SpendFormState extends State<SpendForm> {
   String? selectedKategori;
+  bool? isReminder;
   DatabaseInstance databaseInstance = DatabaseInstance();
   TextEditingController dateController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
@@ -33,7 +34,8 @@ class _SpendFormState extends State<SpendForm> {
             children: [
               ListTile(
                 leading: Icon(Icons.school, color: Colors.white),
-                title: Text("Pendidikan", style: TextStyle(color: Colors.white)),
+                title:
+                    Text("Pendidikan", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Pendidikan";
@@ -44,7 +46,8 @@ class _SpendFormState extends State<SpendForm> {
               ),
               ListTile(
                 leading: Icon(Icons.home, color: Colors.white),
-                title: Text("Tempat Tinggal", style: TextStyle(color: Colors.white)),
+                title: Text("Tempat Tinggal",
+                    style: TextStyle(color: Colors.white)),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Tempat Tinggal";
@@ -66,7 +69,8 @@ class _SpendFormState extends State<SpendForm> {
               ),
               ListTile(
                 leading: Icon(Icons.directions_bus, color: Colors.white),
-                title: Text("Transportasi", style: TextStyle(color: Colors.white)),
+                title:
+                    Text("Transportasi", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Transportasi";
@@ -104,10 +108,23 @@ class _SpendFormState extends State<SpendForm> {
     );
   }
 
+  void _toggleReminder() {
+    setState(() {
+      isReminder = !(isReminder ?? false);
+      print(isReminder);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(isReminder! ? 'Reminder set' : 'Reminder not set'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -215,7 +232,8 @@ class _SpendFormState extends State<SpendForm> {
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2), // Latar belakang transparan
+                        color: Colors.white
+                            .withOpacity(0.2), // Latar belakang transparan
                         shape: BoxShape.circle,
                       ),
                       child: Icon(Icons.qr_code_scanner, color: Colors.white),
@@ -247,14 +265,17 @@ class _SpendFormState extends State<SpendForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan aksi untuk mengingatkan
-                  },
+                  onPressed: _toggleReminder,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    backgroundColor:
+                        isReminder == true ? Colors.green : Colors.blue[900],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                  child: const Text("Ingatkan", style: TextStyle(color: Colors.white)),
+                  child: Text(
+                    isReminder == true ? "Reminder Set" : "Ingatkan",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -265,15 +286,18 @@ class _SpendFormState extends State<SpendForm> {
                       'amount': -amount,
                       'desc': descController.text,
                       'type': 'pengeluaran',
+                      'isreminder': isReminder,
                     });
                     Navigator.pop(context, true);
                     setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                  child: const Text("Simpan", style: TextStyle(color: Colors.white)),
+                  child: const Text("Simpan",
+                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

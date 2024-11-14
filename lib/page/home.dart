@@ -111,6 +111,12 @@ class _HomepageState extends State<Homepage> {
       case "Lainnya":
         return Icons.more_horiz;
 
+      case "Uang Saku":
+        return Icons.account_balance_wallet;
+
+      case "Freelance":
+        return Icons.work;
+
       default:
         return Icons.help_outline; // Default icon
     }
