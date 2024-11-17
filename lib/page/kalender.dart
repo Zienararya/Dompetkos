@@ -14,6 +14,14 @@ class KalenderPage extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Tampilan Bulanan'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Kembali ke halaman sebelumnya
+            },
+          ),
+          backgroundColor: Colors.blue[900],
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
