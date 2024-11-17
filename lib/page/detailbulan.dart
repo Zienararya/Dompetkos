@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:dompetkos/models/transaksi.dart';
 
 class ExpenseDetailPage extends StatelessWidget {
   final String month;
+  final List<TransactionModel> transactions;
 
-  // Tambahkan konstruktor untuk menerima parameter bulan
-  ExpenseDetailPage({required this.month});
+  ExpenseDetailPage({required this.month, required this.transactions});
 
-  final Map<String, double> dataMap = {
-    "Pendidikan": 30,
-    "Tempat Tinggal": 20,
-    "Makanan": 10,
-    "Transportasi": 10,
-    "Lainnya": 20,
-  };
-
-  final List<Color> colorList = [
-    Colors.blue,
-    Colors.green,
-    Colors.yellow[400]!,
-    Colors.red,
-    Colors.black,
-  ];
+  Map<String, double> getCategoryData() {
+    Map<String, double> dataMap = {};
+    for (var transaction in transactions) {
+      if (dataMap.containsKey(transaction.category)) {
+        if (transaction.category != null) {
+          dataMap[transaction.category!] = dataMap[transaction.category!]! +
+              (transaction.amount?.toDouble() ?? 0.0);
+        }
+      } else {
+        if (transaction.category != null) {
+          dataMap[transaction.category!] =
+              transaction.amount?.toDouble() ?? 0.0;
+        }
+      }
+    }
+    return dataMap;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final dataMap = getCategoryData();
+    final colorList = [
+      Colors.blue,
+      Colors.green,
+      Colors.yellow[400]!,
+      Colors.red,
+      Colors.black,
+    ];
+
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        title: Text(month), // Menampilkan bulan yang dipilih di AppBar
+        title: Text(month),
         backgroundColor: Colors.blue[800],
         actions: [
           IconButton(
@@ -72,13 +84,12 @@ class ExpenseDetailPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildLegendItem("Pendidikan", "30%", Colors.blue),
-                        _buildLegendItem("Tempat Tinggal", "20%", Colors.green),
-                        _buildLegendItem("Makanan", "10%", Colors.yellow[400]!),
-                        _buildLegendItem("Transportasi", "10%", Colors.red),
-                        _buildLegendItem("Lainnya", "20%", Colors.black),
-                      ],
+                      children: dataMap.keys.map((category) {
+                        return _buildLegendItem(
+                            category,
+                            '${dataMap[category]!.toStringAsFixed(2)}%',
+                            colorList[dataMap.keys.toList().indexOf(category)]);
+                      }).toList(),
                     ),
                   ),
                 ),
@@ -87,13 +98,14 @@ class ExpenseDetailPage extends StatelessWidget {
             SizedBox(height: 16),
             Expanded(
               child: ListView(
-                children: [
-                  buildExpenseItem(Icons.school, 'Pendidikan', 'Rp.900.000', '30%'),
-                  buildExpenseItem(Icons.home, 'Tempat Tinggal', 'Rp.600.000', '20%'),
-                  buildExpenseItem(Icons.fastfood, 'Makanan', 'Rp.300.000', '10%'),
-                  buildExpenseItem(Icons.directions_car, 'Transportasi', 'Rp.400.000', '10%'),
-                  buildExpenseItem(Icons.shopping_bag, 'Lainnya', 'Rp.200.000', '20%'),
-                ],
+                children: transactions.map((transaction) {
+                  return buildExpenseItem(
+                    _getIconData(transaction.category ?? 'Lainnya'),
+                    transaction.category ?? 'Lainnya',
+                    'Rp.${transaction.amount}',
+                    '${((transaction.amount ?? 0) / dataMap[transaction.category]! * 100).toStringAsFixed(2)}%',
+                  );
+                }).toList(),
               ),
             ),
           ],
@@ -128,7 +140,8 @@ class ExpenseDetailPage extends StatelessWidget {
     );
   }
 
-  Widget buildExpenseItem(IconData icon, String title, String amount, String percentage) {
+  Widget buildExpenseItem(
+      IconData icon, String title, String amount, String percentage) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
@@ -147,5 +160,24 @@ class ExpenseDetailPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  IconData _getIconData(String category) {
+    switch (category) {
+      case "Pendidikan":
+        return Icons.school;
+      case "Tempat Tinggal":
+        return Icons.home;
+      case "Makanan":
+        return Icons.fastfood;
+      case "Transportasi":
+        return Icons.directions_bus;
+      case "Belanja":
+        return Icons.shopping_cart;
+      case "Lainnya":
+        return Icons.more_horiz;
+      default:
+        return Icons.help_outline; // Default icon
+    }
   }
 }
