@@ -1,5 +1,6 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/home.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:dompetkos/page/scan.dart'; // Pastikan path ini benar
 
@@ -111,7 +112,6 @@ class _SpendFormState extends State<SpendForm> {
   void _toggleReminder() {
     setState(() {
       isReminder = !(isReminder ?? false);
-      print(isReminder);
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -133,7 +133,7 @@ class _SpendFormState extends State<SpendForm> {
               MaterialPageRoute(builder: (context) => Homepage()),
             );
           },
-          child: Icon(Icons.feed_outlined, color: Colors.white),
+          child: Icon(Icons.remove_circle_outline, color: Colors.white),
         ),
         title: const Text("Pengeluaran", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[900],
@@ -205,6 +205,7 @@ class _SpendFormState extends State<SpendForm> {
                   controller: amountController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.white),
+                  inputFormatters: [Formatter()],
                   decoration: InputDecoration(
                     labelStyle: TextStyle(color: Colors.white),
                     labelText: "Jumlah uang",
@@ -279,7 +280,8 @@ class _SpendFormState extends State<SpendForm> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    int amount = int.parse(amountController.text);
+                    int amount =
+                        int.parse(amountController.text.replaceAll(',', ''));
                     await databaseInstance.insertTransaction({
                       'date': dateController.text,
                       'category': categoryController.text,

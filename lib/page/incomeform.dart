@@ -1,5 +1,6 @@
 import 'package:dompetkos/page/home.dart';
 import 'package:dompetkos/helpers/db_instance.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 
 class Incomeform extends StatefulWidget {
@@ -94,7 +95,7 @@ class _IncomeformState extends State<Incomeform> {
             );
           },
           child: Icon(
-            Icons.feed_outlined,
+            Icons.add_circle_outline,
             color: Colors.white,
           ),
         ),
@@ -175,6 +176,7 @@ class _IncomeformState extends State<Incomeform> {
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
+              inputFormatters: [Formatter()],
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -223,7 +225,8 @@ class _IncomeformState extends State<Incomeform> {
                     await databaseInstance.insertTransaction({
                       'date': dateController.text,
                       'category': categoryController.text,
-                      'amount': int.parse(amountController.text),
+                      'amount':
+                          int.parse(amountController.text.replaceAll(',', '')),
                       'desc': descController.text,
                       'type': 'pengeluaran',
                     });

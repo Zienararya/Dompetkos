@@ -23,8 +23,10 @@ class DatabaseInstance {
   }
 
   Future<Database> _initDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(
-      _databaseName,
+      path,
       version: _databaseVersion,
       onCreate: (db, version) async {
         await db.execute('''
@@ -48,14 +50,14 @@ class DatabaseInstance {
   }
 
   Future<List<TransactionModel>> all() async {
-    final data = await _database!.query('transactions');
-    List<TransactionModel> result =
-        data.map((e) => TransactionModel.fromJson(e)).toList();
-    return result;
+    final db = await database();
+    final data = await db.query('transactions');
+    return data.map((e) => TransactionModel.fromJson(e)).toList();
   }
 
   Future<int> insertTransaction(Map<String, dynamic> row) async {
-    final query = await _database!.insert('transactions', row);
+    final db = await database();
+    final query = await db.insert('transactions', row);
     return query;
   }
 
