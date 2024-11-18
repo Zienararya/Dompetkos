@@ -1,5 +1,6 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/home.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:dompetkos/page/scan.dart'; // Pastikan path ini benar
 
@@ -10,6 +11,7 @@ class SpendForm extends StatefulWidget {
 
 class _SpendFormState extends State<SpendForm> {
   String? selectedKategori;
+  bool? isReminder;
   DatabaseInstance databaseInstance = DatabaseInstance();
   TextEditingController dateController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
@@ -33,7 +35,8 @@ class _SpendFormState extends State<SpendForm> {
             children: [
               ListTile(
                 leading: Icon(Icons.school, color: Colors.white),
-                title: Text("Pendidikan", style: TextStyle(color: Colors.white)),
+                title:
+                    Text("Pendidikan", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   setState(() {
                     selectedKategori = "Pendidikan";
@@ -42,7 +45,63 @@ class _SpendFormState extends State<SpendForm> {
                   Navigator.pop(context);
                 },
               ),
-              // Tambahkan ListTile lain untuk kategori lain...
+              ListTile(
+                leading: Icon(Icons.home, color: Colors.white),
+                title: Text("Tempat Tinggal",
+                    style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Tempat Tinggal";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.restaurant, color: Colors.white),
+                title: Text("Makanan", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.directions_bus, color: Colors.white),
+                title:
+                    Text("Transportasi", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.shopping_cart, color: Colors.white),
+                title: Text("Belanja", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Belanja";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.more_horiz, color: Colors.white),
+                title: Text("Lainnya", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Lainnya";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         );
@@ -50,9 +109,22 @@ class _SpendFormState extends State<SpendForm> {
     );
   }
 
+  void _toggleReminder() {
+    setState(() {
+      isReminder = !(isReminder ?? false);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(isReminder! ? 'Reminder set' : 'Reminder not set'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -61,7 +133,7 @@ class _SpendFormState extends State<SpendForm> {
               MaterialPageRoute(builder: (context) => Homepage()),
             );
           },
-          child: Icon(Icons.feed_outlined, color: Colors.white),
+          child: Icon(Icons.remove_circle_outline, color: Colors.white),
         ),
         title: const Text("Pengeluaran", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[900],
@@ -133,6 +205,7 @@ class _SpendFormState extends State<SpendForm> {
                   controller: amountController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.white),
+                  inputFormatters: [Formatter()],
                   decoration: InputDecoration(
                     labelStyle: TextStyle(color: Colors.white),
                     labelText: "Jumlah uang",
@@ -160,7 +233,8 @@ class _SpendFormState extends State<SpendForm> {
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2), // Latar belakang transparan
+                        color: Colors.white
+                            .withOpacity(0.2), // Latar belakang transparan
                         shape: BoxShape.circle,
                       ),
                       child: Icon(Icons.qr_code_scanner, color: Colors.white),
@@ -192,33 +266,40 @@ class _SpendFormState extends State<SpendForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan aksi untuk mengingatkan
-                  },
+                  onPressed: _toggleReminder,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    backgroundColor:
+                        isReminder == true ? Colors.green : Colors.blue[900],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                  child: const Text("Ingatkan", style: TextStyle(color: Colors.white)),
+                  child: Text(
+                    isReminder == true ? "Reminder Set" : "Ingatkan",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    int amount = int.parse(amountController.text);
+                    int amount =
+                        int.parse(amountController.text.replaceAll(',', ''));
                     await databaseInstance.insertTransaction({
                       'date': dateController.text,
                       'category': categoryController.text,
                       'amount': -amount,
                       'desc': descController.text,
                       'type': 'pengeluaran',
+                      'isreminder': isReminder,
                     });
                     Navigator.pop(context, true);
                     setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                  child: const Text("Simpan", style: TextStyle(color: Colors.white)),
+                  child: const Text("Simpan",
+                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

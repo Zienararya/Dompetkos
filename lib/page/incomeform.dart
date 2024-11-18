@@ -1,5 +1,6 @@
 import 'package:dompetkos/page/home.dart';
 import 'package:dompetkos/helpers/db_instance.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 
 class Incomeform extends StatefulWidget {
@@ -14,7 +15,6 @@ class _IncomeformState extends State<Incomeform> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  TextEditingController budget = TextEditingController();
 
   @override
   void initState() {
@@ -31,10 +31,8 @@ class _IncomeformState extends State<Incomeform> {
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(
-                  Icons.school,
-                  color: Colors.white,
-                ),
+                leading:
+                    Icon(Icons.account_balance_wallet, color: Colors.white),
                 title: Text(
                   "Uang Saku",
                   style: TextStyle(color: Colors.white),
@@ -48,17 +46,65 @@ class _IncomeformState extends State<Incomeform> {
                 },
               ),
               ListTile(
-                leading: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
+                leading: Icon(Icons.work, color: Colors.white),
                 title: Text(
                   "Freelance",
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Freelance";
+                    selectedKategori = "Tempat Tinggal";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.fastfood,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Makanan",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.directions_bus,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Transportasi",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Belanja",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Belanja";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
@@ -103,7 +149,7 @@ class _IncomeformState extends State<Incomeform> {
             );
           },
           child: Icon(
-            Icons.feed_outlined,
+            Icons.add_circle_outline,
             color: Colors.white,
           ),
         ),
@@ -184,6 +230,7 @@ class _IncomeformState extends State<Incomeform> {
             TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
+              inputFormatters: [Formatter()],
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
@@ -225,31 +272,17 @@ class _IncomeformState extends State<Incomeform> {
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan aksi untuk mengingatkan
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
-                  ),
-                  child: const Text(
-                    "Ingatkan",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 ElevatedButton(
                   onPressed: () async {
                     await databaseInstance.insertTransaction({
                       'date': dateController.text,
                       'category': categoryController.text,
-                      'amount': int.parse(amountController.text),
+                      'amount':
+                          int.parse(amountController.text.replaceAll(',', '')),
                       'desc': descController.text,
                       'type': 'pengeluaran',
-                      // 'budget_id': int.parse(budget.text)
                     });
                     Navigator.pop(context, true);
                     setState(() {});

@@ -1,7 +1,8 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/incomeform.dart';
+import 'package:dompetkos/utils/showNotification.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'spendform.dart';
 import 'kalender.dart';
 
@@ -17,6 +18,9 @@ class _HomepageState extends State<Homepage> {
   bool isExpanded = false;
   bool hasNotification = true; // Penanda apakah ada notifikasi
   List<Map<String, dynamic>> transactions = [];
+  int totalAmount = 0;
+  int totalIncome = 0;
+  int totalExpense = 0;
 
   @override
   void initState() {
@@ -28,6 +32,39 @@ class _HomepageState extends State<Homepage> {
     final data = await DatabaseInstance().fetchTransactions();
     setState(() {
       transactions = data;
+      calculateTotals();
+      checkReminders();
+    });
+  }
+
+  void calculateTotals() {
+    totalIncome = transactions
+        .where((item) => item['amount'] > 0)
+        .fold(0, (sum, item) => sum + (item['amount'] as int));
+    totalExpense = transactions
+        .where((item) => item['amount'] < 0)
+        .fold(0, (sum, item) => sum + (item['amount']) as int);
+    totalAmount = totalIncome + totalExpense;
+  }
+
+  void checkReminders() {
+    DateTime now = DateTime.now();
+    String formattedDate = "${now.day}/${now.month}/${now.year}";
+
+    for (var transaction in transactions) {
+      if (transaction['isreminder'] == 1 &&
+          transaction['date'] == formattedDate) {
+        setState(() {
+          hasNotification = true;
+        });
+        ShowNotification().showNotification('Reminder',
+            'You have a transaction reminder for ${transaction['desc']}');
+        return;
+      }
+    }
+
+    setState(() {
+      hasNotification = false;
     });
   }
 
@@ -35,6 +72,8 @@ class _HomepageState extends State<Homepage> {
     final data = await DatabaseInstance().fetchTransactions();
     setState(() {
       transactions = data;
+      calculateTotals();
+      checkReminders();
     });
   }
 
@@ -70,11 +109,6 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  String formatAmount(int amount) {
-    final formatter = NumberFormat('#,##0', 'en_US');
-    return formatter.format(amount);
-  }
-
   IconData _getIconData(String category) {
     switch (category) {
       case "Pendidikan":
@@ -94,6 +128,12 @@ class _HomepageState extends State<Homepage> {
 
       case "Lainnya":
         return Icons.more_horiz;
+
+      case "Uang Saku":
+        return Icons.account_balance_wallet;
+
+      case "Freelance":
+        return Icons.work;
 
       default:
         return Icons.help_outline; // Default icon
@@ -148,7 +188,19 @@ class _HomepageState extends State<Homepage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text("Notifikasi"),
-                          content: Text("Anda memiliki notifikasi baru."),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: transactions
+                                .where((transaction) =>
+                                    transaction['isreminder'] == 1 &&
+                                    transaction['date'] ==
+                                        "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}")
+                                .map((transaction) => ListTile(
+                                      title: Text(transaction['desc']),
+                                      subtitle: Text(transaction['date']),
+                                    ))
+                                .toList(),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -181,14 +233,6 @@ class _HomepageState extends State<Homepage> {
                               minWidth: 12,
                               minHeight: 12,
                             ),
-                            child: Text(
-                              '1', // Ganti dengan jumlah notifikasi jika perlu
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
                           ),
                         ),
                     ],
@@ -209,7 +253,7 @@ class _HomepageState extends State<Homepage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Rp. 100.000',
+                      'Rp. ${Formatter().formatAmount(totalAmount)}',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 39,
@@ -217,12 +261,12 @@ class _HomepageState extends State<Homepage> {
                           color: Colors.white),
                     ),
                     Text(
-                      'Pemasukan : ',
+                      'Pemasukan : Rp. ${Formatter().formatAmount(totalIncome)}',
                       style: TextStyle(
                           color: Colors.white, fontFamily: 'Montserrat'),
                     ),
                     Text(
-                      'Pengeluaran : ',
+                      'Pengeluaran : Rp. ${Formatter().formatAmount(totalExpense.abs())}',
                       style: TextStyle(
                           color: Colors.white, fontFamily: 'Montserrat'),
                     ),
@@ -259,7 +303,7 @@ class _HomepageState extends State<Homepage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      "Jumlah: ${formatAmount(transaction['amount'])}"),
+                                      "Jumlah: ${Formatter().formatAmount(transaction['amount'])}"),
                                   Text("Tanggal: ${transaction['date']}"),
                                   Text("Kategori: ${transaction['category']}"),
                                   Text("Deskripsi: ${transaction['desc']}"),
@@ -283,7 +327,7 @@ class _HomepageState extends State<Homepage> {
                         color: Colors.white,
                       ),
                       title: Text(
-                        formatAmount(transaction['amount']),
+                        Formatter().formatAmount(transaction['amount']),
                         style: TextStyle(color: Colors.white),
                       ),
                       subtitle: Text(

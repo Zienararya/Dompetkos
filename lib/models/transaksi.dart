@@ -1,6 +1,7 @@
 class TransactionModel {
   int? id, amount;
-  String? date, category, desc, type, budget;
+  String? date, category, desc, type;
+  bool? isreminder;
 
   TransactionModel(
       {this.id,
@@ -9,7 +10,7 @@ class TransactionModel {
       this.amount,
       this.desc,
       this.type,
-      this.budget});
+      this.isreminder});
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
@@ -19,7 +20,7 @@ class TransactionModel {
       amount: json['amount'],
       desc: json['desc'],
       type: json['type'],
-      budget: json['budget'],
+      isreminder: json['isreminder'],
     );
   }
 }
