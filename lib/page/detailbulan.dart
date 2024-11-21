@@ -1,3 +1,5 @@
+import 'package:dompetkos/page/kalender.dart';
+import 'package:dompetkos/style/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:dompetkos/models/transaksi.dart';
@@ -30,26 +32,33 @@ class ExpenseDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final dataMap = getCategoryData();
     final colorList = [
-      Colors.blue,
-      Colors.green,
-      Colors.yellow[400]!,
-      Colors.red,
-      Colors.black,
+      MyThemes.chart1,
+      MyThemes.chart2,
+      MyThemes.chart3,
+      MyThemes.chart4,
+      MyThemes.chart5,
+      MyThemes.chart6,
     ];
 
     return Scaffold(
-      backgroundColor: Colors.blue[50],
+      backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
-        title: Text(month),
-        backgroundColor: Colors.blue[800],
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_forward),
-            onPressed: () {
-              // Tambahkan aksi jika diperlukan
-            },
-          ),
-        ],
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      KalenderPage()), // Navigasi ke halaman kalender
+            );
+          },
+          child: Icon(Icons.feed_outlined, color: Colors.white),
+        ),
+        title: Text(
+          month,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: MyThemes.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

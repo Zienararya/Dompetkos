@@ -1,5 +1,6 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/incomeform.dart';
+import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/showNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:dompetkos/utils/formatter.dart';
@@ -82,7 +83,7 @@ class _HomepageState extends State<Homepage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.blue[50],
+          backgroundColor: MyThemes.lightPrimary,
           title: Text("Konfirmasi"),
           content: Text("Apakah Anda yakin ingin menghapus transaksi ini?"),
           actions: [
@@ -146,13 +147,13 @@ class _HomepageState extends State<Homepage> {
     String formatedDate = "${now.day}/${now.month}/${now.year}";
 
     return Scaffold(
-      backgroundColor: Colors.blue[50],
+      backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
         leading: Icon(
           Icons.calendar_month_outlined,
           color: Colors.white,
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyThemes.primary,
         title: Text(
           formatedDate,
           style: TextStyle(color: Colors.white),
@@ -288,7 +289,7 @@ class _HomepageState extends State<Homepage> {
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
                   return Card(
-                    color: Colors.blue[900],
+                    color: MyThemes.primary,
                     margin: EdgeInsets.symmetric(vertical: 10.0),
                     child: ListTile(
                       onTap: () {
@@ -296,7 +297,7 @@ class _HomepageState extends State<Homepage> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              backgroundColor: Colors.blue[50],
+                              backgroundColor: MyThemes.lightPrimary,
                               title: Text("Details"),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -376,7 +377,7 @@ class _HomepageState extends State<Homepage> {
                   Icons.remove_circle_outline,
                   color: Colors.white,
                 ),
-                backgroundColor: Colors.blue[900],
+                backgroundColor: MyThemes.primary,
               ),
             ),
           ),
@@ -403,7 +404,7 @@ class _HomepageState extends State<Homepage> {
                   Icons.add_circle_outline,
                   color: Colors.white,
                 ),
-                backgroundColor: Colors.blue[900],
+                backgroundColor: MyThemes.primary,
               ),
             ),
           ),
@@ -416,7 +417,7 @@ class _HomepageState extends State<Homepage> {
                   isExpanded = !isExpanded;
                 });
               },
-              backgroundColor: Colors.blue[900],
+              backgroundColor: MyThemes.primary,
               child: const Icon(
                 Icons.add,
                 color: Colors.white,

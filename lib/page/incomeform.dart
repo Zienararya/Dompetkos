@@ -1,5 +1,6 @@
 import 'package:dompetkos/page/home.dart';
 import 'package:dompetkos/helpers/db_instance.dart';
+import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class _IncomeformState extends State<Incomeform> {
       context: context,
       builder: (context) {
         return Container(
-          color: Colors.blue[900],
+          color: MyThemes.primary,
           child: Wrap(
             children: [
               ListTile(
@@ -83,7 +84,7 @@ class _IncomeformState extends State<Incomeform> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
+      backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -106,7 +107,7 @@ class _IncomeformState extends State<Incomeform> {
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyThemes.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -125,7 +126,7 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[900],
+                fillColor: MyThemes.primary,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(8.0),
@@ -153,7 +154,7 @@ class _IncomeformState extends State<Incomeform> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 decoration: BoxDecoration(
-                  color: Colors.blue[900],
+                  color: MyThemes.primary,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.grey),
                 ),
@@ -187,7 +188,7 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[900],
+                fillColor: MyThemes.primary,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(8.0),
@@ -208,7 +209,7 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[900],
+                fillColor: MyThemes.primary,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(8.0),
@@ -234,7 +235,7 @@ class _IncomeformState extends State<Incomeform> {
                     setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
+                    backgroundColor: MyThemes.primary,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),

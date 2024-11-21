@@ -1,3 +1,4 @@
+import 'package:dompetkos/style/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class ScanPage extends StatelessWidget {
               Navigator.pop(context); // Kembali ke halaman sebelumnya
             },
           ),
-          backgroundColor: Colors.blue[900],
+          backgroundColor: MyThemes.primary,
           centerTitle: true,
         ),
         body: Container(

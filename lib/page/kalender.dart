@@ -1,6 +1,7 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/models/transaksi.dart';
 import 'package:dompetkos/page/detailbulan.dart';
+import 'package:dompetkos/style/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dompetkos/page/home.dart';
@@ -24,7 +25,6 @@ class _KalenderPageState extends State<KalenderPage> {
     final transactions =
         transactionsData.map((e) => TransactionModel.fromJson(e)).toList();
     setState(() {
-      print(transactions);
       groupedTransactions = groupByMonth(transactions);
     });
   }
@@ -46,7 +46,7 @@ class _KalenderPageState extends State<KalenderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
+      backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -59,7 +59,7 @@ class _KalenderPageState extends State<KalenderPage> {
         ),
         title: const Text('Tampilan Bulanan',
             style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyThemes.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -90,7 +90,7 @@ class _KalenderPageState extends State<KalenderPage> {
       child: Container(
         height: 80,
         margin: EdgeInsets.only(bottom: 8.0),
-        color: Colors.blue[900],
+        color: MyThemes.primary,
         child: Center(
           child: Text(
             month,
