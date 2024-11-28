@@ -1,5 +1,6 @@
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/page/home.dart';
+import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:dompetkos/page/scan.dart'; // Pastikan path ini benar
@@ -30,7 +31,7 @@ class _SpendFormState extends State<SpendForm> {
       context: context,
       builder: (context) {
         return Container(
-          color: Colors.blue[900],
+          color: MyThemes.primary,
           child: Wrap(
             children: [
               ListTile(
@@ -124,7 +125,7 @@ class _SpendFormState extends State<SpendForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
+      backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -136,7 +137,7 @@ class _SpendFormState extends State<SpendForm> {
           child: Icon(Icons.remove_circle_outline, color: Colors.white),
         ),
         title: const Text("Pengeluaran", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue[900],
+        backgroundColor: MyThemes.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -152,7 +153,7 @@ class _SpendFormState extends State<SpendForm> {
                 prefixIcon: Icon(Icons.calendar_today, color: Colors.white),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[900],
+                fillColor: MyThemes.primary,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(8.0),
@@ -181,7 +182,7 @@ class _SpendFormState extends State<SpendForm> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 decoration: BoxDecoration(
-                  color: Colors.blue[900],
+                  color: MyThemes.primary,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.grey),
                 ),
@@ -212,7 +213,7 @@ class _SpendFormState extends State<SpendForm> {
                     prefixIcon: Icon(Icons.money, color: Colors.white),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: Colors.blue[900],
+                    fillColor: MyThemes.primary,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(8.0),
@@ -253,7 +254,7 @@ class _SpendFormState extends State<SpendForm> {
                 prefixIcon: Icon(Icons.note, color: Colors.white),
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.blue[900],
+                fillColor: MyThemes.primary,
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                   borderRadius: BorderRadius.circular(8.0),
@@ -269,7 +270,7 @@ class _SpendFormState extends State<SpendForm> {
                   onPressed: _toggleReminder,
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        isReminder == true ? Colors.green : Colors.blue[900],
+                        isReminder == true ? Colors.green : MyThemes.primary,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),
@@ -294,7 +295,7 @@ class _SpendFormState extends State<SpendForm> {
                     setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
+                    backgroundColor: MyThemes.primary,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),

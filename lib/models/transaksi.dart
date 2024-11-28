@@ -20,7 +20,7 @@ class TransactionModel {
       amount: json['amount'],
       desc: json['desc'],
       type: json['type'],
-      isreminder: json['isreminder'],
+      isreminder: json['isreminder'] == 1,
     );
   }
 }
