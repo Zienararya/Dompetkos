@@ -28,7 +28,7 @@ class ScanPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 200,
                 height: 200,
                 child: Stack(
