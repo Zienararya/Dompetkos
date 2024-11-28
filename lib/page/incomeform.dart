@@ -54,14 +54,68 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Freelance";
+                    selectedKategori = "Tempat Tinggal";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.more_horiz, color: Colors.white),
+                leading: Icon(
+                  Icons.fastfood,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Makanan",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Makanan";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.directions_bus,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Transportasi",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Transportasi";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Belanja",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedKategori = "Belanja";
+                    categoryController.text = selectedKategori.toString();
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                ),
                 title: Text(
                   "Lainnya",
                   style: TextStyle(color: Colors.white),
