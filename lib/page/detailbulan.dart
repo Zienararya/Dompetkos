@@ -1,5 +1,5 @@
-import 'package:dompetkos/page/kalender.dart';
 import 'package:dompetkos/style/theme.dart';
+import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:dompetkos/models/transaksi.dart';
@@ -13,13 +13,11 @@ class ExpenseDetailPage extends StatelessWidget {
   Map<String, double> getCategoryData() {
     Map<String, double> dataMap = {};
     for (var transaction in transactions) {
-      if (dataMap.containsKey(transaction.category)) {
-        if (transaction.category != null) {
+      if (transaction.category != null) {
+        if (dataMap.containsKey(transaction.category)) {
           dataMap[transaction.category!] = dataMap[transaction.category!]! +
               (transaction.amount?.toDouble() ?? 0.0);
-        }
-      } else {
-        if (transaction.category != null) {
+        } else {
           dataMap[transaction.category!] =
               transaction.amount?.toDouble() ?? 0.0;
         }
@@ -28,9 +26,15 @@ class ExpenseDetailPage extends StatelessWidget {
     return dataMap;
   }
 
+  double getTotalAmount() {
+    return transactions.fold(0.0,
+        (sum, transaction) => sum + (transaction.amount?.toDouble() ?? 0.0));
+  }
+
   @override
   Widget build(BuildContext context) {
     final dataMap = getCategoryData();
+    final totalAmount = getTotalAmount();
     final colorList = [
       MyThemes.chart1,
       MyThemes.chart2,
@@ -45,12 +49,7 @@ class ExpenseDetailPage extends StatelessWidget {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      KalenderPage()), // Navigasi ke halaman kalender
-            );
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           child: Icon(Icons.feed_outlined, color: Colors.white),
         ),
@@ -94,9 +93,7 @@ class ExpenseDetailPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: dataMap.keys.map((category) {
-                        return _buildLegendItem(
-                            category,
-                            '${dataMap[category]!.toStringAsFixed(2)}%',
+                        return _buildLegendItem(category,
                             colorList[dataMap.keys.toList().indexOf(category)]);
                       }).toList(),
                     ),
@@ -107,12 +104,14 @@ class ExpenseDetailPage extends StatelessWidget {
             SizedBox(height: 16),
             Expanded(
               child: ListView(
-                children: transactions.map((transaction) {
+                children: dataMap.keys.map((category) {
+                  final amount = dataMap[category]!;
+                  final percentage = (amount / totalAmount) * 100;
                   return buildExpenseItem(
-                    _getIconData(transaction.category ?? 'Lainnya'),
-                    transaction.category ?? 'Lainnya',
-                    'Rp.${transaction.amount}',
-                    '${((transaction.amount ?? 0) / dataMap[transaction.category]! * 100).toStringAsFixed(2)}%',
+                    _getIconData(category),
+                    category,
+                    'Rp.${Formatter().formatAmount(amount.toInt())}',
+                    '${percentage.toStringAsFixed(1)}%',
                   );
                 }).toList(),
               ),
@@ -123,7 +122,7 @@ class ExpenseDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLegendItem(String title, String percentage, Color color) {
+  Widget _buildLegendItem(String title, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -139,10 +138,6 @@ class ExpenseDetailPage extends StatelessWidget {
               title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
             ),
-          ),
-          Text(
-            percentage,
-            style: TextStyle(fontSize: 10),
           ),
         ],
       ),

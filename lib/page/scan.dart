@@ -1,11 +1,53 @@
 import 'package:dompetkos/style/theme.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-void main() {
-  runApp(ScanPage());
+class ScanPage extends StatefulWidget {
+  const ScanPage({super.key});
+
+  @override
+  State<ScanPage> createState() => _ScanPageState();
 }
 
-class ScanPage extends StatelessWidget {
+class _ScanPageState extends State<ScanPage> {
+  XFile? _image;
+  String _extractedText = '';
+  List<String> _textLines = [];
+
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      setState(() {
+        _image = image;
+      });
+      _extractText(image);
+    }
+  }
+
+  Future<void> _extractText(XFile image) async {
+    final String text = await FlutterTesseractOcr.extractText(
+      image.path,
+      language: 'ind',
+      args: {
+        'tessdata': 'assets/tessdata',
+      },
+    );
+    setState(() {
+      _extractedText = text;
+      _textLines = text.split('\n');
+      print(_extractedText);
+    });
+  }
+
+  void _selectText(String selectedText) {
+    Navigator.pop(context, selectedText);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,10 +55,13 @@ class ScanPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'SCAN',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.pop(context); // Kembali ke halaman sebelumnya
             },
@@ -25,109 +70,50 @@ class ScanPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          color: Colors.blue[100], // Latar belakang biru muda
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 200,
-                height: 200,
-                child: Stack(
-                  children: [
-                    // Sudut kiri atas
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 5, color: Colors.black),
-                            left: BorderSide(width: 5, color: Colors.black),
-                          ),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Sudut kanan atas
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 5, color: Colors.black),
-                            right: BorderSide(width: 5, color: Colors.black),
-                          ),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Sudut kiri bawah
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(width: 5, color: Colors.black),
-                            left: BorderSide(width: 5, color: Colors.black),
-                          ),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Sudut kanan bawah
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(width: 5, color: Colors.black),
-                            right: BorderSide(width: 5, color: Colors.black),
-                          ),
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+          color: MyThemes.lightPrimary,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (_image != null) Image.file(File(_image!.path)),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(MyThemes.primary)),
+                  onPressed: () => _pickImage(ImageSource.camera),
+                  child: Text(
+                    'Capture Image',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.flash_on, color: Colors.black, size: 30),
-                    onPressed: () {
-                      // Tambahkan aksi untuk tombol flash
-                    },
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(MyThemes.primary)),
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  child: Text(
+                    'Select Image from Gallery',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.image, color: Colors.black, size: 30),
-                    onPressed: () {
-                      // Tambahkan aksi untuk tombol gambar
-                    },
+                ),
+                if (_textLines.isNotEmpty)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _textLines.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(
+                            _textLines[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () => _selectText(_textLines[index]),
+                        );
+                      },
+                    ),
                   ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

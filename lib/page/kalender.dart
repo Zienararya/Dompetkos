@@ -4,7 +4,6 @@ import 'package:dompetkos/page/detailbulan.dart';
 import 'package:dompetkos/style/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:dompetkos/page/home.dart';
 
 class KalenderPage extends StatefulWidget {
   @override
@@ -33,12 +32,14 @@ class _KalenderPageState extends State<KalenderPage> {
       List<TransactionModel> transactions) {
     Map<String, List<TransactionModel>> data = {};
     for (var transaction in transactions) {
-      DateTime date = DateFormat('dd/MM/yyyy').parse(transaction.date!);
-      String month = DateFormat('MMMM yyyy').format(date);
-      if (!data.containsKey(month)) {
-        data[month] = [];
+      if (transaction.type == 'pengeluaran') {
+        DateTime date = DateFormat('dd/MM/yyyy').parse(transaction.date!);
+        String month = DateFormat('MMMM yyyy').format(date);
+        if (!data.containsKey(month)) {
+          data[month] = [];
+        }
+        data[month]!.add(transaction);
       }
-      data[month]!.add(transaction);
     }
     return data;
   }
@@ -50,10 +51,7 @@ class _KalenderPageState extends State<KalenderPage> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Homepage()),
-            );
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           child: Icon(Icons.feed_outlined, color: Colors.white),
         ),

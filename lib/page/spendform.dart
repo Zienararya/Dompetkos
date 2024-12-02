@@ -1,5 +1,4 @@
 import 'package:dompetkos/helpers/db_instance.dart';
-import 'package:dompetkos/page/home.dart';
 import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/formatter.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +121,19 @@ class _SpendFormState extends State<SpendForm> {
     );
   }
 
+  Future<void> _scanImage() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ScanPage()),
+    );
+
+    if (result != null) {
+      setState(() {
+        amountController.text = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,10 +141,7 @@ class _SpendFormState extends State<SpendForm> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Homepage()),
-            );
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           child: Icon(Icons.remove_circle_outline, color: Colors.white),
         ),
@@ -224,13 +233,7 @@ class _SpendFormState extends State<SpendForm> {
                 Positioned(
                   right: 10,
                   child: GestureDetector(
-                    onTap: () {
-                      // Navigasi ke halaman ScanPage saat ikon scan ditekan
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ScanPage()),
-                      );
-                    },
+                    onTap: _scanImage,
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
