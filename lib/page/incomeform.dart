@@ -1,4 +1,3 @@
-import 'package:dompetkos/page/home.dart';
 import 'package:dompetkos/helpers/db_instance.dart';
 import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/formatter.dart';
@@ -54,58 +53,7 @@ class _IncomeformState extends State<Incomeform> {
                 ),
                 onTap: () {
                   setState(() {
-                    selectedKategori = "Tempat Tinggal";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.fastfood,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Makanan",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Makanan";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.directions_bus,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Transportasi",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Transportasi";
-                    categoryController.text = selectedKategori.toString();
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "Belanja",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  setState(() {
-                    selectedKategori = "Belanja";
+                    selectedKategori = "Freelance";
                     categoryController.text = selectedKategori.toString();
                   });
                   Navigator.pop(context);
@@ -142,12 +90,7 @@ class _IncomeformState extends State<Incomeform> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Homepage()), // Navigasi ke halaman kalender
-            );
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           child: Icon(
             Icons.add_circle_outline,
@@ -283,7 +226,7 @@ class _IncomeformState extends State<Incomeform> {
                       'amount':
                           int.parse(amountController.text.replaceAll(',', '')),
                       'desc': descController.text,
-                      'type': 'pengeluaran',
+                      'type': 'pemasukan',
                     });
                     Navigator.pop(context, true);
                     setState(() {});
