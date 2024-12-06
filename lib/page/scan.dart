@@ -50,70 +50,66 @@ class _ScanPageState extends State<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'SCAN',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context); // Kembali ke halaman sebelumnya
-            },
-          ),
-          backgroundColor: MyThemes.primary,
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'SCAN',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        body: Container(
-          color: MyThemes.lightPrimary,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (_image != null) Image.file(File(_image!.path)),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(MyThemes.primary)),
-                  onPressed: () => _pickImage(ImageSource.camera),
-                  child: Text(
-                    'Capture Image',
-                    style: TextStyle(color: Colors.white),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context); // Kembali ke halaman sebelumnya
+          },
+        ),
+        backgroundColor: MyThemes.primary,
+        centerTitle: true,
+      ),
+      body: Container(
+        color: MyThemes.lightPrimary,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (_image != null) Image.file(File(_image!.path)),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(MyThemes.primary)),
+                onPressed: () => _pickImage(ImageSource.camera),
+                child: Text(
+                  'Capture Image',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(MyThemes.primary)),
+                onPressed: () => _pickImage(ImageSource.gallery),
+                child: Text(
+                  'Select Image from Gallery',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              if (_textLines.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _textLines.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          _textLines[index],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () => _selectText(_textLines[index]),
+                      );
+                    },
                   ),
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(MyThemes.primary)),
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                  child: Text(
-                    'Select Image from Gallery',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                if (_textLines.isNotEmpty)
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _textLines.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            _textLines[index],
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onTap: () => _selectText(_textLines[index]),
-                        );
-                      },
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

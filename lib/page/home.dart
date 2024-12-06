@@ -1,4 +1,5 @@
 import 'package:dompetkos/helpers/db_instance.dart';
+import 'package:dompetkos/page/comparemonth.dart';
 import 'package:dompetkos/page/incomeform.dart';
 import 'package:dompetkos/style/theme.dart';
 import 'package:dompetkos/utils/showNotification.dart';
@@ -143,29 +144,40 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String formatedDate = "${now.day}/${now.month}/${now.year}";
-
     return Scaffold(
       backgroundColor: MyThemes.lightPrimary,
       appBar: AppBar(
+        leadingWidth: 50.0,
         leading: Icon(
-          Icons.calendar_month_outlined,
+          Icons.account_balance_wallet,
           color: Colors.white,
         ),
         backgroundColor: MyThemes.primary,
         title: Text(
-          formatedDate,
-          style: TextStyle(color: Colors.white),
+          "DompetKos",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Row(
               children: <Widget>[
-                Icon(
-                  Icons.bar_chart,
-                  color: Colors.white,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CompareMonthPage()), // Navigasi ke halaman kalender
+                    );
+                  },
+                  child: Icon(
+                    Icons.bar_chart,
+                    color: Colors.white,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -279,7 +291,8 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(
+            top: 16.0, left: 16.0, right: 16.0, bottom: 100.0),
         child: Column(
           children: [
             const SizedBox(height: 10),
@@ -360,6 +373,7 @@ class _HomepageState extends State<Homepage> {
             child: Visibility(
               visible: isExpanded,
               child: FloatingActionButton.extended(
+                heroTag: 'spendForm', // Unique heroTag
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,
@@ -387,6 +401,7 @@ class _HomepageState extends State<Homepage> {
             child: Visibility(
               visible: isExpanded,
               child: FloatingActionButton.extended(
+                heroTag: 'incomeForm', // Unique heroTag
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,
@@ -412,6 +427,7 @@ class _HomepageState extends State<Homepage> {
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
+              heroTag: 'mainFab', // Unique heroTag
               onPressed: () {
                 setState(() {
                   isExpanded = !isExpanded;

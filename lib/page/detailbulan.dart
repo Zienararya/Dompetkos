@@ -23,6 +23,7 @@ class ExpenseDetailPage extends StatelessWidget {
         }
       }
     }
+    print(dataMap);
     return dataMap;
   }
 
@@ -51,7 +52,7 @@ class ExpenseDetailPage extends StatelessWidget {
           onTap: () {
             Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
-          child: Icon(Icons.feed_outlined, color: Colors.white),
+          child: Icon(Icons.arrow_back_outlined, color: Colors.white),
         ),
         title: Text(
           month,

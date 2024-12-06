@@ -93,7 +93,7 @@ class _IncomeformState extends State<Incomeform> {
             Navigator.pop(context); // Kembali ke halaman sebelumnya
           },
           child: Icon(
-            Icons.add_circle_outline,
+            Icons.arrow_back_outlined,
             color: Colors.white,
           ),
         ),
